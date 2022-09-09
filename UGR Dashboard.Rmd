@@ -2,7 +2,7 @@
 title: "UGR Dashboard"
 author: "AE Hessl"
 date: "2022-09-09"
-output: html_document
+output: rmarkdown::github_document
 ---
 
 ```{r libraries, echo=FALSE, message=FALSE, warning=FALSE}
@@ -39,10 +39,14 @@ researchTerm <- names(researchCnt)
 researchDF <- data.frame(Term = researchTerm, Enrollment = researchCnt)
 researchDF$Semester <- substr(researchDF$Term, 5, 7)
 
+researchCrnt <- researchDF[nrow(researchDF), "Enrollment" ]
+thisTerm <- researchDF[nrow(researchDF), "Term" ]
+
 ggplot(researchDF, aes(x=Term, y=Enrollment, fill=Semester)) + 
   geom_bar(stat = "identity", width=0.5) +
-  ggtitle("Research Enrollment by Term") + 
-  theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))
+  labs(title="Research Enrollment by Term",
+       subtitle=paste0("Enrollment in", thisTerm,": ", researchCrnt)) +
+  theme(axis.text.x=element_text(angle=90, hjust=1,vjust=0.5))
 ```
 
 
@@ -54,9 +58,12 @@ df <- data.frame(RAPtbl)
 names(df) <- c("Term", "Enrollment")
 df$Semester <- substr(df$Term, 5, 7)
 
+RAPCrnt <- df[nrow(df), "Enrollment" ]
+
 ggplot(df, aes(x=Term, y=Enrollment, fill=Semester)) + 
   geom_bar(stat = "identity", width=0.5) +
-  ggtitle ("RAP Enrollmnent by Term") + 
+ labs(title="RAP Enrollment by Term",
+       subtitle=paste0("Enrollment in", thisTerm,": ", RAPCrnt)) +
   theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))
 ```
 
@@ -70,9 +77,12 @@ SUREdf$Semester <- substr(SUREdf$Term, 5, 7)
 SUREdf <- SUREdf[SUREdf$Semester=="05", ]
 SUREdf$Year <- substr(SUREdf$Term, 1, 4)
 
+SURECrnt <- SUREdf[nrow(SUREdf), "Enrollment" ]
+
 ggplot(SUREdf, aes(x=Year, y=Enrollment, fill=Semester)) + 
   geom_bar(stat = "identity", width=0.5) +
-  ggtitle ("SURE Enrollmnent by Year") + 
+ labs(title="SURE Enrollment by Year",
+       subtitle=paste0("Enrollment in", thisTerm,": ", SURECrnt)) +
   xlab("Year") +
   theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))
 ```
