@@ -1,0 +1,78 @@
+---
+title: "UGR Dashboard"
+author: "AE Hessl"
+date: "2022-09-09"
+output: html_document
+---
+
+```{r libraries, echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyr)
+library(ggplot2)
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library(devtools)
+devtools::install_github('cttobin/ggthemr')
+library(ggthemr)
+ggthemr("dust") 
+```
+
+### Data derived from WVU Registrar's Office (Rebecca Tarabrella) collected after drop date at the beginning of each semester. Includes all 297, 497, and some 386, 471, 486 (CURs)
+#### Students are only counted once per semester even if enrolled in multiple research courses.
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+enroll <- read.csv("Data/Seminar and Research Courses 201208-202208.csv")
+```
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+# Separate Term and Year
+enroll$Year <- substr(enroll$Term, 1, 4)
+enroll$Semester <- substr(enroll$Term, 5, 7)
+```
+
+## All Research Courses
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+research <- enroll[ , c("WVUID", "Term")]
+
+researchCnt <- colSums(table(research))
+researchTerm <- names(researchCnt)
+researchDF <- data.frame(Term = researchTerm, Enrollment = researchCnt)
+researchDF$Semester <- substr(researchDF$Term, 5, 7)
+
+ggplot(researchDF, aes(x=Term, y=Enrollment, fill=Semester)) + 
+  geom_bar(stat = "identity", width=0.5) +
+  ggtitle("Research Enrollment by Term") + 
+  theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))
+```
+
+
+## RAP
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+RAP <- enroll[ enroll$Subject=="HONR" & enroll$Course=="297", c("Term")]
+RAPtbl <- table(RAP)
+df <- data.frame(RAPtbl)
+names(df) <- c("Term", "Enrollment")
+df$Semester <- substr(df$Term, 5, 7)
+
+ggplot(df, aes(x=Term, y=Enrollment, fill=Semester)) + 
+  geom_bar(stat = "identity", width=0.5) +
+  ggtitle ("RAP Enrollmnent by Term") + 
+  theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))
+```
+
+## SURE
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+SURE <- enroll[ enroll$Subject=="HONR" & enroll$Course=="497", c("Term")]
+SUREtbl <- table(SURE)
+SUREdf <- data.frame(SUREtbl)
+names(SUREdf) <- c("Term", "Enrollment")
+SUREdf$Semester <- substr(SUREdf$Term, 5, 7)
+SUREdf <- SUREdf[SUREdf$Semester=="05", ]
+SUREdf$Year <- substr(SUREdf$Term, 1, 4)
+
+ggplot(SUREdf, aes(x=Year, y=Enrollment, fill=Semester)) + 
+  geom_bar(stat = "identity", width=0.5) +
+  ggtitle ("SURE Enrollmnent by Year") + 
+  xlab("Year") +
+  theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))
+```
