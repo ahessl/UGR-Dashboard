@@ -45,7 +45,7 @@ thisTerm <- researchDF[nrow(researchDF), "Term" ]
 ggplot(researchDF, aes(x=Term, y=Enrollment, fill=Semester)) + 
   geom_bar(stat = "identity", width=0.5) +
   labs(title="Research Enrollment by Term",
-       subtitle=paste0("Enrollment in", thisTerm,": ", researchCrnt)) +
+       subtitle=paste0("Enrollment in ", thisTerm,": ", researchCrnt)) +
   theme(axis.text.x=element_text(angle=90, hjust=1,vjust=0.5))
 ```
 
@@ -63,7 +63,7 @@ RAPCrnt <- df[nrow(df), "Enrollment" ]
 ggplot(df, aes(x=Term, y=Enrollment, fill=Semester)) + 
   geom_bar(stat = "identity", width=0.5) +
  labs(title="RAP Enrollment by Term",
-       subtitle=paste0("Enrollment in", thisTerm,": ", RAPCrnt)) +
+       subtitle=paste0("Enrollment in ", thisTerm,": ", RAPCrnt)) +
   theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))
 ```
 
@@ -82,7 +82,7 @@ SURECrnt <- SUREdf[nrow(SUREdf), "Enrollment" ]
 ggplot(SUREdf, aes(x=Year, y=Enrollment, fill=Semester)) + 
   geom_bar(stat = "identity", width=0.5) +
  labs(title="SURE Enrollment by Year",
-       subtitle=paste0("Enrollment in", thisTerm,": ", SURECrnt)) +
+       subtitle=paste0("Enrollment in ", thisTerm,": ", SURECrnt)) +
   xlab("Year") +
   theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))
 ```
